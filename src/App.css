@@ -19,6 +19,11 @@ img{
 }
 a{
   text-decoration: none!important;
+  min-width: 45px!important;
+}
+button{
+  background: none!important;
+  min-width: 45px!important;
 }
 ::-webkit-scrollbar {
   width: 0.8em;

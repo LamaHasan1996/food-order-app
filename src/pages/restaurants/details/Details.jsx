@@ -1,21 +1,42 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useStyles from "../../../styles/pages/home/restaurants";
-import { getDetails } from "../../../utils/globalFunctions";
+import { getDetails, buyMeal } from "../../../utils/globalFunctions";
 
 export default function RestaurantDetails() {
   const restaurantsClasses = useStyles();
   const [data, setData] = useState(null);
+  const [buy, setBuy] = useState(sessionStorage.getItem("user") ? true : false);
   const { alias } = useParams();
 
   useEffect(() => {
-    if (alias) {
-      let details = getDetails(alias);
-      if (details) setData(details);
-    }
+    const fetchData = async () => {
+      try {
+        const response = getDetails(alias);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setData(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (alias) fetchData();
   }, [alias]);
+
+  useEffect(() => {
+    const handleAllowBuy = () => {
+      let user = sessionStorage.getItem("user");
+      console.log(user, "user");
+      if (user) setBuy(true);
+      else setBuy(false);
+    };
+    window.addEventListener("login", handleAllowBuy);
+    return () => {
+      window.removeEventListener("login", handleAllowBuy);
+    };
+  }, []);
 
   return (
     <Container
@@ -50,7 +71,7 @@ export default function RestaurantDetails() {
               restaurantsClasses.mb24
             )}
           >
-            Choose You Happy Meal:
+            {!buy && "Log In and "} Choose You Happy Meal:
           </Typography>
           {data?.meals?.length
             ? data?.meals?.map((meal) => (
@@ -66,12 +87,27 @@ export default function RestaurantDetails() {
                         {meal?.title}
                       </Box>
                     )}
-                    {meal?.cost && (
-                      <Box className={restaurantsClasses.black}>
-                        {meal?.cost}
-                        {" SYP"}
-                      </Box>
-                    )}
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      className={restaurantsClasses.addBtnBox}
+                    >
+                      {meal?.cost && (
+                        <Box className={restaurantsClasses.black}>
+                          {meal?.cost}
+                          {" SYP"}
+                        </Box>
+                      )}
+                      {buy && (
+                        <Button
+                          className={restaurantsClasses.addBtn}
+                          onClick={(e) => buyMeal(meal)}
+                        >
+                          +
+                        </Button>
+                      )}
+                    </Box>
                   </Box>
                   {meal?.description && (
                     <Box className={restaurantsClasses.mealDescription}>
@@ -84,7 +120,7 @@ export default function RestaurantDetails() {
         </>
       ) : (
         <Typography className={restaurantsClasses.noDataText}>
-          Sorry! No Data Found
+          Loading...
         </Typography>
       )}
     </Container>

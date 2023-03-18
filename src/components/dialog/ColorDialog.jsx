@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import ColorPicker from "../colorPicker/ColorPicker";
+import {ColorPicker} from "../index";
 
 function BootstrapDialogTitle(props) {
   const { children, onClose, ...other } = props;
@@ -32,7 +32,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function SettingsDialog(props) {
+export default function ColorDialog(props) {
   let {
     open,
     handleClose,

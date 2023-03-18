@@ -61,6 +61,7 @@ function App() {
           height: "100%",
           boxShadow: "none",
           backgroundColor: dark ? "#0a1929" : "#fff",
+          minHeight:"100vh"
         }}
       >
         <Suspense fallback={<h5>Loading...</h5>}>

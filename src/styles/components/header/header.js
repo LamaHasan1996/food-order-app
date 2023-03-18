@@ -36,5 +36,27 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
     color: `${theme?.elements?.colors.white}!important`,
   },
+  btn: {
+    border: `1px solid ${theme?.elements?.colors.white}!important`,
+    fontSize: `${theme?.elements?.fontSize?.sm}px!important`,
+    padding: "4px!important",
+    borderRadius: "6px!important",
+    color: `${theme?.elements?.colors.white}!important`,
+    margin: "6px 8px 6px 16px!important",
+    textTransform: "capitalize!important",
+  },
+  redFlag: {
+    "&:before": {
+      top: 2,
+      right: 5,
+      width: 10,
+      height: 10,
+      content: "''",
+      position: "absolute",
+      borderWidth: 7,
+      backgroundColor: "red",
+      borderRadius: 5,
+    },
+  },
 }));
 export default useStyles;

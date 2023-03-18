@@ -41,6 +41,60 @@ export const changeThemeColor = (key, color) => {
     })
   );
 };
+
 export const getDetails = (alias) => {
   return restaurants?.find((item) => item?.alias === alias);
+};
+
+export const buyMeal = (meal) => {
+  const newEvent = new Event("buy");
+  window.dispatchEvent(newEvent);
+  let purchases = sessionStorage?.getItem("purchases")
+    ? JSON.parse(sessionStorage?.getItem("purchases"))
+    : null;
+  if (purchases) {
+    const index = purchases.data.findIndex(
+      (p) => p.title === meal.title && p.restaurant === meal.restaurant
+    );
+    if (index !== -1) {
+      purchases.data[index].num++;
+    } else {
+      purchases.data.push({ ...meal, num: 1 });
+    }
+  } else {
+    purchases = { data: [{ ...meal, num: 1 }] };
+  }
+  sessionStorage?.setItem("purchases", JSON.stringify(purchases));
+};
+
+export const removeMeal = (meal, setPurchases) => {
+  const newEvent = new Event("remove");
+  let purchases = sessionStorage?.getItem("purchases")
+    ? JSON.parse(sessionStorage?.getItem("purchases"))
+    : null;
+  if (purchases) {
+    const index = purchases.data.findIndex(
+      (p) => p.title === meal.title && p.restaurant === meal.restaurant
+    );
+    if (index !== -1) {
+      const num = purchases.data[index].num;
+      if (num === 1) {
+        purchases.data.splice(index, 1);
+      } else {
+        purchases.data[index].num--;
+      }
+      sessionStorage?.setItem("purchases", JSON.stringify(purchases));
+    }
+    setPurchases(purchases?.data);
+  }
+  window.dispatchEvent(newEvent);
+};
+
+export const confirmOrder = () => {
+  const newEvent = new Event("confirm");
+  window.dispatchEvent(newEvent);
+  sessionStorage?.setItem("confirmed", true);
+  setTimeout(() => {
+    sessionStorage?.removeItem("confirmed");
+  }, 60000);
 };
