@@ -1,5 +1,5 @@
 import { Container, Grid, Typography, Box } from "@mui/material";
-import useStyles from "../../../styles/pages/home/service";
+import useStyles from "../../../styles/components/home/service";
 
 export default function Service() {
   const serviceClasses = useStyles();

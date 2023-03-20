@@ -1,4 +1,4 @@
-import { Box, Button, Container, Link, Typography } from "@mui/material";
+import { Box, Button, Container, Link, Typography, Badge } from "@mui/material";
 import { useState, useEffect } from "react";
 import { BiSun } from "react-icons/bi";
 import { FiMoon, FiSettings } from "react-icons/fi";
@@ -18,7 +18,12 @@ export default function Header() {
   );
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [buy, setBuy] = useState(
-    JSON.parse(sessionStorage.getItem("purchases"))?.data?.length ? true : false
+    sessionStorage.getItem("purchases")
+      ? JSON.parse(sessionStorage.getItem("purchases"))?.data.reduce(
+          (accumulator, obj) => accumulator + obj.num,
+          0
+        )
+      : 0
   );
   const [primaryColor, setPrimaryColor] = useState(
     localStorage.getItem("currentTheme")
@@ -68,18 +73,21 @@ export default function Header() {
 
   useEffect(() => {
     const handleBuy = () => {
-      setBuy(true);
+      const purchases = JSON.parse(sessionStorage?.getItem("purchases"));
+      const data = purchases?.data;
+      const sum = data?.reduce((accumulator, obj) => accumulator + obj.num, 0);
+      setBuy(sum);
     };
     const handleRemove = () => {
       let purchases = JSON.parse(sessionStorage?.getItem("purchases"));
-      if (!purchases || purchases?.data?.length === 0) setBuy(false);
+      if (!purchases || purchases?.data?.length === 0) setBuy(0);
     };
     window.addEventListener("buy", handleBuy);
-    window.addEventListener("remove", handleRemove);
+    window.addEventListener("remove", handleBuy);
 
     return () => {
       window.removeEventListener("buy", handleBuy);
-      window.removeEventListener("remove", handleRemove);
+      window.removeEventListener("remove", handleBuy);
     };
   }, []);
 
@@ -113,11 +121,10 @@ export default function Header() {
             {spinner ? <Spinner white={true} /> : null}
           </Button>
           {logOut ? (
-            <Button
-              href={"/cart"}
-              className={buy ? headerClasses.redFlag : null}
-            >
-              <BsCart3 className={headerClasses.icon} />
+            <Button href={"/cart"}>
+              <Badge badgeContent={buy} className={headerClasses.padge}>
+                <BsCart3 className={headerClasses.icon} />
+              </Badge>
             </Button>
           ) : null}
           <Button

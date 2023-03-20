@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginTop: 16,
     "& .MuiLink-root:hover": {
-      backgroundColor: theme?.elements?.colors?.primary,
+      backgroundColor: `${theme?.elements?.colors?.primary}!important`,
       color: `${theme?.elements?.colors.white}!important`,
     },
   },

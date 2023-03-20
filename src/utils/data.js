@@ -38,6 +38,8 @@ export const restaurants = [
     link: "/restaurant/fatafeat",
     alias: "fatafeat",
     open: "09:00 AM",
+    lat: 34.8982922,
+    lng: 35.8760316,
     meals: [
       {
         id: 1,
@@ -99,6 +101,8 @@ export const restaurants = [
     link: "/restaurant/al-aseel",
     alias: "al-aseel",
     open: "10:00 AM",
+    lat: 34.8789653,
+    lng: 35.9003917,
     meals: [
       {
         id: 1,
@@ -160,6 +164,8 @@ export const restaurants = [
     link: "/restaurant/big-bite",
     alias: "big-bite",
     open: "08:00 AM",
+    lat: 34.8345121,
+    lng: 35.9056142,
     meals: [
       {
         id: 1,
@@ -221,6 +227,8 @@ export const restaurants = [
     link: "/restaurant/chef-man",
     alias: "chef-man",
     open: "09:30 AM",
+    lat: 34.8915096,
+    lng: 35.8930515,
     meals: [
       {
         id: 1,
@@ -282,6 +290,8 @@ export const restaurants = [
     link: "/restaurant/happy-meal",
     alias: "happy-meal",
     open: "10:00 AM",
+    lat: 34.8854913,
+    lng: 35.8785918,
     meals: [
       {
         id: 1,
@@ -343,6 +353,8 @@ export const restaurants = [
     link: "/restaurant/masaya",
     alias: "masaya",
     open: "11:00 AM",
+    lat: 34.8830713,
+    lng: 35.885101,
     meals: [
       {
         id: 1,

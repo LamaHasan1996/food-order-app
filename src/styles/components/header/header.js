@@ -45,17 +45,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "6px 8px 6px 16px!important",
     textTransform: "capitalize!important",
   },
-  redFlag: {
-    "&:before": {
-      top: 2,
-      right: 5,
-      width: 10,
-      height: 10,
-      content: "''",
-      position: "absolute",
-      borderWidth: 7,
-      backgroundColor: "red",
-      borderRadius: 5,
+  padge: {
+    "& .MuiBadge-badge": {
+      backgroundColor: `${theme?.elements?.colors?.white}!important`,
+      color: `${theme?.elements?.colors?.primary}!important`,
     },
   },
 }));

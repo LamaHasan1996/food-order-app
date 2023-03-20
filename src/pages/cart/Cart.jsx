@@ -1,8 +1,7 @@
 import { Typography, Box, Button, Container } from "@mui/material";
 import { useState, useEffect } from "react";
-import useStyles from "../../styles/pages/home/restaurants";
+import useStyles from "../../styles/components/home/restaurants";
 import clsx from "clsx";
-import { removeMeal } from "../../utils/globalFunctions";
 import { CheckOutDialog } from "../../components";
 import { BsCheck2Circle } from "react-icons/bs";
 
@@ -30,6 +29,29 @@ export default function Cart() {
       setFinalCost(finalCost);
     }
   }, [purchases]);
+
+  const removeMeal = (meal, setPurchases) => {
+    const newEvent = new Event("remove");
+    let purchases = sessionStorage?.getItem("purchases")
+      ? JSON.parse(sessionStorage?.getItem("purchases"))
+      : null;
+    if (purchases) {
+      const index = purchases.data.findIndex(
+        (p) => p.title === meal.title && p.restaurant === meal.restaurant
+      );
+      if (index !== -1) {
+        const num = purchases.data[index].num;
+        if (num === 1) {
+          purchases.data.splice(index, 1);
+        } else {
+          purchases.data[index].num--;
+        }
+        sessionStorage?.setItem("purchases", JSON.stringify(purchases));
+      }
+      setPurchases(purchases?.data);
+    }
+    window.dispatchEvent(newEvent);
+  };
 
   return (
     <Container

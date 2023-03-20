@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Link, Typography } from "@mui/material";
 import Card from "../../card/Card";
-import useStyles from "../../../styles/pages/home/restaurants";
+import useStyles from "../../../styles/components/home/restaurants";
 import { restaurants } from "../../../utils/data";
 import { useState, useEffect } from "react";
 

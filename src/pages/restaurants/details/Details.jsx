@@ -1,15 +1,19 @@
-import { Box, Container, Typography, Button } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import useStyles from "../../../styles/pages/home/restaurants";
-import { getDetails, buyMeal } from "../../../utils/globalFunctions";
+import useStyles from "../../../styles/components/home/restaurants";
+import { restaurants } from "../../../utils/data";
 
 export default function RestaurantDetails() {
   const restaurantsClasses = useStyles();
   const [data, setData] = useState(null);
   const [buy, setBuy] = useState(sessionStorage.getItem("user") ? true : false);
   const { alias } = useParams();
+
+  const getDetails = (alias) => {
+    return restaurants?.find((item) => item?.alias === alias);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +42,26 @@ export default function RestaurantDetails() {
     };
   }, []);
 
+  const buyMeal = (meal) => {
+    const newEvent = new Event("buy");
+    let purchases = sessionStorage?.getItem("purchases")
+      ? JSON.parse(sessionStorage?.getItem("purchases"))
+      : null;
+    if (purchases) {
+      const index = purchases.data.findIndex(
+        (p) => p.title === meal.title && p.restaurant === meal.restaurant
+      );
+      if (index !== -1) {
+        purchases.data[index].num++;
+      } else {
+        purchases.data.push({ ...meal, num: 1 });
+      }
+    } else {
+      purchases = { data: [{ ...meal, num: 1 }] };
+    }
+    sessionStorage?.setItem("purchases", JSON.stringify(purchases));
+    window.dispatchEvent(newEvent);
+  };
   return (
     <Container
       maxWidth="lg"

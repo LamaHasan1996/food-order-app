@@ -13,7 +13,6 @@ import useStyles from "../../styles/components/dialog/dialog";
 import { GoLocation } from "react-icons/go";
 import { MdOutlineTimer } from "react-icons/md";
 import { TbMoneybag } from "react-icons/tb";
-import { confirmOrder } from "../../utils/globalFunctions";
 import clsx from "clsx";
 import { Spinner } from "../index";
 
@@ -51,6 +50,15 @@ export default function CheckOutDialog(props) {
       window.removeEventListener("confirm", handleConfirm);
     };
   }, []);
+
+  const confirmOrder = () => {
+    const newEvent = new Event("confirm");
+    window.dispatchEvent(newEvent);
+    sessionStorage?.setItem("confirmed", true);
+    setTimeout(() => {
+      sessionStorage?.removeItem("confirmed");
+    }, 60000);
+  };
 
   return (
     <Dialog

@@ -1,4 +1,4 @@
-import useStyles from "../../../styles/pages/home/marketing";
+import useStyles from "../../../styles/components/home/marketing";
 import { Container, Grid } from "@mui/material";
 import MarketingCard from "../../marketingCard/MarketingCard";
 import { marketingData } from "../../../utils/data";

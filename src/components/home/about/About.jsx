@@ -1,5 +1,5 @@
 import { Container, Grid, Box } from "@mui/material";
-import useStyles from "../../../styles/pages/home/about";
+import useStyles from "../../../styles/components/home/about";
 
 export default function About() {
   const aboutClasses = useStyles();

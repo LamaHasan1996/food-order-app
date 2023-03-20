@@ -13,3 +13,5 @@ export { default as LoginDialog } from "./dialog/LoginDialog";
 export { default as CustomTextField } from "./textField/TextField";
 export { default as Spinner } from "./spinner/Spinner";
 export { default as CheckOutDialog } from "./dialog/CheckOutDialog";
+export { default as Location } from "./home/location/Location";
+export { default as MapWithMarkers } from "./map/CustomMap";

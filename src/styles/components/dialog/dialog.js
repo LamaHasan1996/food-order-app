@@ -37,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiInputBase-root .MuiInputBase-input": {
       height: 11,
     },
+    "& .MuiInputBase-root .MuiInputBase-input:-webkit-autofill": {
+      WebkitBoxShadow: "0 0 0 1000px white inset",
+    },
+    "& .MuiInputBase-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: `${theme?.elements?.colors?.primary}!important`,
+    },
   },
   btn: {
     border: `1px solid ${theme?.elements?.colors?.primary}!important`,
