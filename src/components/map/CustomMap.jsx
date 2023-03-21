@@ -5,7 +5,6 @@ export default function Map() {
   const [map, setMap] = useState(null);
   const [currentLocationMarker, setCurrentLocationMarker] = useState(null);
   const [restaurantMarkers, setRestaurantMarkers] = useState([]);
-  const distanceThreshold = 1;
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -44,43 +43,22 @@ export default function Map() {
     };
   }, []);
 
-  function distance(lat1, lng1, lat2, lng2) {
-    const R = 6371; // radius of the earth in km
-    const dLat = deg2rad(lat2 - lat1);
-    const dLng = deg2rad(lng2 - lng1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) *
-        Math.cos(deg2rad(lat2)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const dist = R * c; // distance in km
-    return dist;
-  }
-
-  function deg2rad(deg) {
-    return deg * (Math.PI / 180);
-  }
-
   function addRestaurantMarkers(map, currentLocationMarker) {
-    let markers = [];
-    for (let i = 0; i < restaurants.length; i++) {
-      const restaurant = restaurants[i];
-      const restaurantMarker = new window.google.maps.Marker({
+    const markers = restaurants.map((restaurant) => {
+      const marker = new window.google.maps.Marker({
         position: { lat: restaurant.lat, lng: restaurant.lng },
         map: map,
         title: restaurant.title,
-        icon: "images/icons/restaurant.png",
+        icon: "/images/icons/restaurant.png",
       });
-      restaurantMarker.addListener("click", () => {
+      marker.addListener("click", () => {
         const directionsService = new window.google.maps.DirectionsService();
         const directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setMap(map);
         directionsService.route(
           {
             origin: currentLocationMarker.getPosition(),
-            destination: restaurantMarker.getPosition(),
+            destination: marker.getPosition(),
             travelMode: window.google.maps.TravelMode.DRIVING,
           },
           (response, status) => {
@@ -93,31 +71,12 @@ export default function Map() {
         );
       });
 
-      let isDuplicate = false;
-      for (let j = 0; j < markers.length; j++) {
-        const existingMarker = markers[j];
-        const dist = distance(
-          existingMarker.getPosition().lat(),
-          existingMarker.getPosition().lng(),
-          restaurantMarker.getPosition().lat(),
-          restaurantMarker.getPosition().lng()
-        );
-        if (dist <= distanceThreshold) {
-          existingMarker.setIcon("images/icons/number-2.png");
-          existingMarker.setTitle(
-            markers[j]?.getTitle() + "&" + restaurantMarker?.getTitle()
-          );
-          markers = markers.filter((item) => item !== restaurantMarker);
-          isDuplicate = true;
-          break;
-        }
-      }
-
-      if (!isDuplicate) {
-        markers.push(restaurantMarker);
-      }
-    }
-
+      return marker;
+    });
+    var markerCluster = new MarkerClusterer(map, markers, {
+      imagePath:
+        "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+    });
     setRestaurantMarkers(markers);
   }
   function handleLocationError(browserHasGeolocation, pos) {
