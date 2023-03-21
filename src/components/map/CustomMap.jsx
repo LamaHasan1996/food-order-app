@@ -24,6 +24,22 @@ export default function Map() {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
+            var geofence = new google.maps.Circle({
+              center: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              },
+              radius: 500,
+              map: map,
+              fillColor: "#AA0000",
+              fillOpacity: 0.2,
+              strokeColor: "#AA0000",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+            });
+            // google.maps.event.addListener(geofence, "click", function () {
+            //   alert("You clicked the geofence!");
+            // });
             const currentLocationMarker = new window.google.maps.Marker({
               position: pos,
               map: map,
