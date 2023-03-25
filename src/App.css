@@ -35,3 +35,6 @@ button{
   border-radius: 6px;
   border: 2px solid #f9f9ff;
 }
+.gm-style-mtc > div > div:nth-child(1) {
+  z-index: 1000000 !important;
+}

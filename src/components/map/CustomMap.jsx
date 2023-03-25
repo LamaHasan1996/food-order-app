@@ -8,7 +8,7 @@ export default function Map() {
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDsC_zRb6eZK5ExpD1LOPefTDZctZ7ULyY&callback=initMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDsC_zRb6eZK5ExpD1LOPefTDZctZ7ULyY&callback=initMap&callback=initMap&libraries=drawing`;
     script.defer = true;
     script.async = true;
     document.head.appendChild(script);
@@ -16,6 +16,21 @@ export default function Map() {
       const map = new window.google.maps.Map(document.getElementById("map"), {
         zoom: 13,
       });
+      const drawingManager = new window.google.maps.drawing.DrawingManager({
+        drawingMode: null,
+        drawingControl: true,
+        drawingControlOptions: {
+          position: window.google.maps.ControlPosition.TOP_CENTER,
+          drawingModes: [
+            window.google.maps.drawing.OverlayType.MARKER,
+            window.google.maps.drawing.OverlayType.POLYGON,
+            window.google.maps.drawing.OverlayType.RECTANGLE,
+            window.google.maps.drawing.OverlayType.CIRCLE,
+            window.google.maps.drawing.OverlayType.POLYLINE,
+          ],
+        },
+      });
+      drawingManager.setMap(map);
       setMap(map);
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -24,22 +39,6 @@ export default function Map() {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-            var geofence = new google.maps.Circle({
-              center: {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              },
-              radius: 500,
-              map: map,
-              fillColor: "#AA0000",
-              fillOpacity: 0.2,
-              strokeColor: "#AA0000",
-              strokeOpacity: 0.8,
-              strokeWeight: 2,
-            });
-            // google.maps.event.addListener(geofence, "click", function () {
-            //   alert("You clicked the geofence!");
-            // });
             const currentLocationMarker = new window.google.maps.Marker({
               position: pos,
               map: map,
